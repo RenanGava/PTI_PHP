@@ -15,23 +15,32 @@ function Pegarfloat($str)
     return $str;
 }
 
+
+
 function calculoImc($peso, $altura)
 {
+    $arrayImc = [
+        "18.5" => "Magreza",
+        "24.9" => "Saudável",
+        "29.9" => "Sobrepeso",
+        "34.9" => "Obesidade Grau I",
+        "39.9" => "Obesidade Grau II",
+        "" => "Obesidade Grau III"
+    
+    ];
 
     $calc = $peso / ($altura ** 2);
 
-    if ($calc <= 18.5) {
-        return '<p>Atenção, seu IMC é <span>' . number_format($calc, 2) . '</span>, e você está classificado como <span>Magreza</span></p>';
-    } else if ($calc > 18.5 && $calc < 24.9) {
-        return '<p>Atenção, seu IMC é <span>' . number_format($calc, 2) . '</span>, e você está classificado como <span>Saudável</span></p>';
-    } else if ($calc >= 25.0  && $calc < 29.9) {
-        return '<p>Atenção, seu IMC é <span>' . number_format($calc, 2) . '</span>, e você está classificado como <span>Sobrepeso</span></p>';
-    } else if ($calc >= 30  && $calc < 34.9) {
-        return '<p>Atenção, seu IMC é <span>' . number_format($calc, 2) . '</span>, e você está classificado como <span>Obesidade Grau I</span></p>';
-    } else if ($calc >= 35  && $calc < 39.9) {
-        return '<p>Atenção, seu IMC é <span>' . number_format($calc, 2) . '</span>, e você está classificado como <span>Obesidade Grau II</span></p>';
-    } else {
-        return '<p>Atenção, seu IMC é <span>' . number_format($calc, 2) . '</span>, e você está classificado como <span>Obesidade Grau III</span></p>';
+    foreach( $arrayImc as $indice => $saude){
+        
+        if($calc < $indice){
+            echo '<p>Atenção, seu IMC é <span>' . number_format($calc, 2) . '</span>, e você está classificado como <span>'.$saude.'</span></p>';
+            break;
+        }
+        else if($calc > $arrayImc['39.9']){
+            echo '<p>Atenção, seu IMC é <span>' . number_format($calc, 2) . '</span>, e você está classificado como <span>'.$saude.'</span></p>';
+        }
+
     }
 }
 
@@ -41,8 +50,7 @@ if (isset($_GET['acao'])) {
 
     if ($peso != 0 && $altura != 0) {
         echo calculoImc($peso, $altura);
-    }
-    else{
+    } else {
         echo '<p>Atenção os valores de Altura e Peso são inválidos</p>';
     }
 }
